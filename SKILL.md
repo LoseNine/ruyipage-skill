@@ -9,7 +9,7 @@ description: Example-driven and standards-aware RuyiPage automation skill for Py
 
 Use this skill when writing, debugging, or refactoring Python automation built on `ruyiPage`.
 
-This repository is organized around the local `E:\ruyipage` sources rather than a documentation mirror. The examples directory is treated as the most important practical reference. When a task matches an existing example closely, reuse that structure before inventing a new pattern.
+This repository is organized around official `ruyiPage` examples and curated references rather than a generic documentation mirror. The examples layer is treated as the most important practical reference. When a task matches an existing example closely, reuse that structure before inventing a new pattern.
 
 When the task touches WebDriver BiDi semantics, use the standard mappings under `standards/` to separate protocol-level meaning from `ruyiPage` convenience APIs.
 

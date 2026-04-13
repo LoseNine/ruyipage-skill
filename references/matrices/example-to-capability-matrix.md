@@ -1,6 +1,6 @@
 # Example To Capability Matrix
 
-This matrix ensures every local example under `E:\ruyipage\examples` has a documented place in the skill.
+This matrix ensures every documented official example has a place in the skill.
 
 | Example | Primary Area | Notes |
 |---|---|---|

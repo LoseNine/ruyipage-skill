@@ -1,6 +1,6 @@
 # Implemented Vs Missing
 
-This summary is based on the local comparison assets under `E:\ruyipage\examples\w3c_bidi`.
+This summary is based on the `ruyiPage` BiDi comparison assets and the standards references represented in this skill.
 
 ## Standard Totals
 

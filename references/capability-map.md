@@ -1,6 +1,6 @@
 # Capability Map
 
-This file summarizes the practical `ruyiPage` capability map based on `E:\ruyipage\examples\*.py`.
+This file summarizes the practical `ruyiPage` capability map based on the official example scripts.
 
 ## 1. Core Startup And Navigation
 

@@ -1,6 +1,6 @@
 # Canonical Examples
 
-This file lists the most useful example scripts in `E:\ruyipage\examples` and explains when to start from each one.
+This file lists the most useful `ruyiPage` example scripts and explains when to start from each one.
 
 ## First-Line Examples
 

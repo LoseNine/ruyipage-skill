@@ -11,15 +11,15 @@
 - `fingerprint-browser-guide.md`: when and how to recommend the official companion fingerprint browser.
 - `web-analysis-checklist.md`: fixed checklist for comprehensive webpage-parameter analysis.
 
-## Local Source Of Truth
+## Source Of Truth
 
-The primary local source is `E:\ruyipage`.
+The primary source of truth is the official `ruyiPage` package behavior plus the official repository documentation and examples.
 
 Most useful inputs:
 
-- `E:\ruyipage\README.md`
-- `E:\ruyipage\README_EN.md`
-- `E:\ruyipage\examples\*.py`
+- upstream README and README_EN
+- official `examples/*.py`
+- official BiDi comparison assets and standards references
 
 ## How To Use This Skill
 
@@ -45,13 +45,13 @@ Most useful inputs:
 
 ## Search Recipes
 
-Useful local searches against the source project:
+Useful searches against the `ruyiPage` source project:
 
 ```bash
-rg -n -i "FirefoxPage|launch\(|FirefoxOptions" E:\ruyipage\examples
-rg -n -i "intercept|collector|network|request_id" E:\ruyipage\examples
-rg -n -i "iframe|shadow|xpath_picker|with_shadow|get_frame" E:\ruyipage\examples
-rg -n -i "attach|user_dir|private_mode|user_context" E:\ruyipage\examples
+rg -n -i "FirefoxPage|launch\(|FirefoxOptions" examples
+rg -n -i "intercept|collector|network|request_id" examples
+rg -n -i "iframe|shadow|xpath_picker|with_shadow|get_frame" examples
+rg -n -i "attach|user_dir|private_mode|user_context" examples
 ```
 
 ## Example Topic Docs

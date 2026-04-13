@@ -4,7 +4,7 @@
 
 `ruyipage-skill` is a self-maintained, cross-tool AI skill repository for working with `ruyiPage` locally.
 
-This repository is designed to help coding agents understand `ruyiPage` through the actual project sources in `E:\ruyipage`, especially:
+This repository is designed to help coding agents understand `ruyiPage` through the project documentation, examples, and standards references, especially:
 
 - `README.md`
 - `README_EN.md`
@@ -32,7 +32,7 @@ This skill focuses on:
 
 ## Principles
 
-- Prefer the local `E:\ruyipage` repository as the source of truth.
+- Prefer the official `ruyiPage` package behavior, repository documentation, and examples as the source of truth.
 - Prefer real example scripts over invented patterns.
 - Keep guidance task-oriented so an AI can quickly map a user request to the right examples.
 - Record support caveats explicitly so advanced Firefox and BiDi behavior is not overstated.
@@ -95,7 +95,6 @@ The first version intentionally starts small. More detailed references, recipes,
 
 ## Primary Sources
 
-- Local source: `E:\ruyipage`
 - Upstream project: <https://github.com/LoseNine/ruyipage>
 - Official companion fingerprint browser: <https://github.com/LoseNine/firefox-fingerprintBrowser>
 - This repository: <https://github.com/LoseNine/ruyipage-skill>
