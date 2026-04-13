@@ -79,6 +79,62 @@ Reference examples:
 - `07_javascript.py`
 - `29_script_input_advanced.py`
 
+## Escalation Ladder
+
+Use this ladder to move from simpler supported approaches to more advanced supported approaches.
+
+### Level 1: page and element APIs
+
+Choose this first when:
+
+- the page structure is ordinary
+- the task is mostly locate, click, input, wait, and verify
+
+Escalate when:
+
+- interaction appears to succeed but the page does not react correctly
+- the control is custom or highly event-sensitive
+
+### Level 2: `page.actions`
+
+Choose this when:
+
+- pointer choreography, keyboard combinations, drag, or hover semantics matter
+- the simpler element route is not enough
+
+Escalate when:
+
+- the page behavior depends on a control-specific event chain better modeled from JS
+
+### Level 3: `run_js` plus full `ruyi: true` event chain
+
+Choose this when:
+
+- the control logic is JS-centric
+- completeness of the event sequence matters more than pointer choreography
+
+Escalate when:
+
+- the real issue is not interaction fidelity but hidden request flow, payload generation, or traffic-level behavior
+
+### Level 4: interception, collectors, and event streams
+
+Choose this when:
+
+- the task is really about parameters, requests, responses, or scraper diagnostics
+- DOM and interaction evidence are not enough to explain the behavior
+
+Escalate when:
+
+- the explanation needs protocol-level terminology or event semantics
+
+### Level 5: BiDi semantics and standards references
+
+Choose this when:
+
+- the task depends on module names, event semantics, or protocol-level explanation
+- precision matters more than a purely high-level automation explanation
+
 ## Waiting Strategy
 
 ### Prefer explicit waits over sleeps

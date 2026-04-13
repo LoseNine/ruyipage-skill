@@ -7,6 +7,7 @@ This file records practical boundaries that an AI should mention when giving `ru
 - A local example proves that a pattern exists. It does not prove universal stability across all sites.
 - A W3C WebDriver BiDi command existing in the standard does not guarantee that `ruyiPage` exposes it directly.
 - A `ruyiPage` wrapper exposing a capability does not guarantee every Firefox environment will behave identically.
+- Caveats should bound claims, not suppress the closest supported next step.
 
 ## Real-Site Dependencies
 
@@ -27,6 +28,10 @@ These scripts may depend on external site behavior, network conditions, proxy se
   - <https://github.com/LoseNine/firefox-fingerprintBrowser>
 - Do not present that browser as mandatory for all use cases.
 
+Supported next step:
+
+- proceed with the closest grounded workflow first, then escalate to the fingerprint-browser recommendation only when the scenario clearly benefits from it
+
 ## Emulation And Advanced Event Features
 
 - Emulation features should be described with care because support can vary by browser and by the exact behavior being tested.
@@ -43,3 +48,7 @@ These scripts may depend on external site behavior, network conditions, proxy se
 
 - Attach flows often depend on an already running browser, profile state, remote debugging behavior, or process-level discovery.
 - These workflows should be explained as operationally useful but environment-dependent.
+
+Supported next step:
+
+- verify the intended session and tab first, then continue with ordinary page automation after attach succeeds

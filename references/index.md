@@ -30,6 +30,8 @@ Most useful inputs:
 5. Read `support-caveats.md` when the task is advanced, real-site dependent, or operational.
 6. Read `standards/index.md` when protocol or BiDi semantics matter.
 
+For broad implementation-oriented tasks, prefer a playbook from `recipes/` first, then the closest example.
+
 ## Main Topic Map
 
 - core startup, navigation, waits, screenshots, and output
@@ -76,6 +78,8 @@ rg -n -i "attach|user_dir|private_mode|user_context" examples
 
 ## Recipes
 
+- `recipes/default-automation-sequence.md`
+- `recipes/escalation-ladder.md`
 - `recipes/login-flow.md`
 - `recipes/packet-capture.md`
 - `recipes/api-reverse-engineering.md`

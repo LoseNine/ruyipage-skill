@@ -77,6 +77,12 @@ Preferred readiness order:
 2. `browsingContext.domContentLoaded` or `browsingContext.load` when event confirmation is useful
 3. bounded extra stabilization only if the page is SPA-heavy or still issuing important async requests
 
+Expected output for this step:
+
+- final page URL
+- title if available
+- readiness evidence used for the analysis
+
 ### 3. Capture DOM and HTML
 
 Capture at least:
@@ -88,6 +94,12 @@ Capture at least:
 
 If frames matter, inspect them separately instead of assuming the main page snapshot is enough.
 
+Expected output for this step:
+
+- page HTML snapshot
+- rendered DOM snapshot details if relevant
+- any frame-specific note if the content is not all in the main page
+
 ### 4. Capture JS runtime clues
 
 Use `run_js` to inspect:
@@ -96,6 +108,12 @@ Use `run_js` to inspect:
 - script URLs
 - global config objects on `window`
 - token, sign, timestamp, nonce, or trace-style values that already exist in runtime state
+
+Expected output for this step:
+
+- script clues
+- runtime globals or config findings
+- any value that appears relevant to parameters or request construction
 
 ### 5. Capture network data
 
@@ -108,6 +126,11 @@ For each important request, preserve as much of this as possible:
 - request body
 - response status
 - response body
+
+Expected output for this step:
+
+- a request/response table or summary keyed by `request_id` when available
+- the likely target requests rather than unrelated static assets
 
 ### 6. Continue briefly after document load
 
@@ -125,6 +148,8 @@ The final analysis should be organized into:
 4. network findings
 5. likely parameter sources and relationships
 6. uncertainties or missing pieces
+
+Do not stop at a vague summary. The result should make clear what evidence was collected and what conclusions actually follow from it.
 
 ## Important Distinctions
 

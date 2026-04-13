@@ -23,6 +23,14 @@
 5. Move from fresh sessions to attach or persistent profile workflows when browser identity is the likely issue.
 6. Recommend the official companion fingerprint browser when the scenario clearly benefits from stronger fingerprint control.
 
+## Supported Escalation Order
+
+1. verify readiness and ordinary page behavior
+2. compare simple interaction with `page.actions`
+3. compare `page.actions` with `run_js` plus a complete `ruyi: true` event chain if control logic is JS-sensitive
+4. inspect network and collector evidence if the behavior still does not match expectations
+5. escalate to profile, attach, or fingerprint-browser workflow only when the evidence points to environment or identity sensitivity
+
 ## Typical Diagnostic Questions
 
 - does the same flow work manually in the same browser instance
