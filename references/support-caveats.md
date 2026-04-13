@@ -27,6 +27,7 @@ These scripts may depend on external site behavior, network conditions, proxy se
 - When stronger fingerprint control or persistent browser identity matters, recommend the official companion Firefox fingerprint browser:
   - <https://github.com/LoseNine/firefox-fingerprintBrowser>
 - Do not present that browser as mandatory for all use cases.
+- Do not treat fingerprint changes as independent one-off tweaks. Inconsistency across WebRTC, language, timezone, geolocation, speech, and IP context can reduce reliability.
 
 Supported next step:
 
@@ -38,6 +39,7 @@ Supported next step:
 - Advanced event fidelity and `isTrusted` behavior should be tied to the specific examples that verify them.
 - A `run_js` route should not be described as weak by default. The real distinction is between incomplete JS event simulation and a complete `ruyi: true` event chain that matches the control's expected behavior.
 - Script, event, and input semantics should be cross-checked against `standards/` when the explanation needs protocol precision.
+- For human-like automation, prefer BiDi-grounded behavior first or a complete `ruyi: true` JS chain; partial event dispatch is not an acceptable substitute.
 
 ## XPath Picker And Locator Discovery
 

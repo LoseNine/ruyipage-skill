@@ -8,6 +8,8 @@
 
 这个仓库以 Markdown 为核心组织知识，可被多种 AI 工具复用，也适合作为 `ruyiPage` 相关自动化与分析任务的参考资料。
 
+本仓库中的默认行为约束是：所有实现、分析和自动化流程都优先使用 `ruyiPage` 库及其官方配套源码与浏览器能力；如果运行环境缺失，先探测缺失项，再安装或下载所需依赖后继续。
+
 ## 使用方法
 
 ### 1. 下载仓库
@@ -36,6 +38,12 @@ git clone https://github.com/LoseNine/ruyipage-skill.git
 - 将仓库作为当前工作区的一部分，让 AI 直接读取其中的文档
 - 在 AI 工具里把对应入口文件配置为规则、skill、project instruction 或 prompt context
 - 在不支持仓库感知的工具中，手动把入口文件内容粘贴进去
+
+在实际执行任务时，推荐同时确保以下基础环境可用：
+
+- 已安装可用的 `ruyiPage` Python 包
+- 能访问 `ruyiPage` 官方仓库或本地包源码进行参考
+- 在高风控场景下，可按需准备官方配套 Firefox 指纹浏览器
 
 ### 3. 作为仓库知识包直接使用
 
@@ -84,10 +92,20 @@ git clone https://github.com/LoseNine/ruyipage-skill.git
 如果只想最快用起来，可以直接按下面做：
 
 1. 下载或克隆 `ruyipage-skill`
-2. 在 AI 工具里让它先读取 `AGENTS.md`
-3. 再读取 `SKILL.md`
-4. 做具体任务时，再按需要读取 `references/index.md`
-5. 如果任务涉及 BiDi、事件、协议语义，再读取 `standards/index.md`
+2. 确认当前环境里有 `ruyiPage` 包；如果没有，先安装它
+3. 在 AI 工具里让它先读取 `AGENTS.md`
+4. 再读取 `SKILL.md`
+5. 做具体任务时，再按需要读取 `references/index.md`
+6. 如果任务涉及 BiDi、事件、协议语义，再读取 `standards/index.md`
+
+### 8. 环境缺失时怎么处理
+
+如果 AI 在执行任务时发现缺少 `ruyiPage` 或相关浏览器环境，推荐按这个顺序处理：
+
+1. 先探测当前 Python 环境是否已安装 `ruyiPage`
+2. 如果未安装，先安装 `ruyiPage` 包
+3. 如果任务依赖官方 examples 或源码说明，再打开官方仓库：<https://github.com/LoseNine/ruyipage>
+4. 如果任务属于高风控、反检测、多账号隔离场景，再按需下载和使用官方配套 Firefox 指纹浏览器：<https://github.com/LoseNine/firefox-fingerprintBrowser>
 
 ## 适用范围
 

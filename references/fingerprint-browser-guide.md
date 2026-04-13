@@ -18,6 +18,25 @@ Recommend it when the task depends on one or more of these requirements:
 - custom WebRTC, WebGL, UA, timezone, language, speech, and canvas settings
 - higher-risk login, scraping, or anti-bot scenarios
 
+## Consistency Rules
+
+Fingerprint-related settings should be treated as a consistency set.
+
+Important alignment areas:
+
+- WebRTC should not expose a conflicting network identity relative to the effective IP path
+- language and locale should match the intended regional identity
+- timezone should match the intended geographic region
+- geolocation should not contradict timezone and IP context
+- speech settings should match the selected language profile
+- other fingerprint surfaces should be adjusted with the same identity model rather than mixed ad hoc
+
+## Profile Isolation Guidance
+
+- prefer a fresh `user_dir` for a new identity
+- reuse an existing `user_dir` only when the workflow truly depends on the persisted session
+- avoid mixing unrelated identities into the same persistent profile
+
 ## When Not To Over-Push It
 
 - do not present it as required for ordinary local automation tasks

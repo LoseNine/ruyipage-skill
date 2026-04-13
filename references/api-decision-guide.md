@@ -58,6 +58,8 @@ Reference examples:
 - you need more realistic input sequences
 - the target site is sensitive to interaction fidelity
 
+For anti-bot-sensitive workflows, this is often the preferred first escalation layer because it stays close to BiDi-grounded interaction behavior.
+
 Reference examples:
 
 - `05_actions_chain.py`
@@ -73,6 +75,8 @@ Reference examples:
 Do not treat JavaScript as inherently lower-fidelity. In `ruyiPage`, JS plus `ruyi: true` can reach the same interaction tier as BiDi-style behavior when the event sequence is modeled completely.
 
 What matters is whether the script reproduces the full behavior chain. For example, a form `select` workflow may require multiple coordinated events rather than only setting a value and firing one final event.
+
+For sensitive automation, do not use JS as a shortcut unless it fully models the intended human-like control behavior.
 
 Reference examples:
 
@@ -101,6 +105,7 @@ Choose this when:
 
 - pointer choreography, keyboard combinations, drag, or hover semantics matter
 - the simpler element route is not enough
+- a more BiDi-grounded human-like interaction path is preferred for anti-bot-sensitive behavior
 
 Escalate when:
 
@@ -112,6 +117,7 @@ Choose this when:
 
 - the control logic is JS-centric
 - completeness of the event sequence matters more than pointer choreography
+- the page expects JS-visible control semantics and the full human-like event chain can be modeled
 
 Escalate when:
 
@@ -246,6 +252,12 @@ Do not rely on only one layer if the user explicitly wants a comprehensive resul
 - the user is running multiple accounts
 - session leakage between tasks would be harmful
 
+### Prefer a fresh `user_dir` when
+
+- the task needs a new browser identity
+- account isolation should start from a clean persistent profile
+- the workflow is anti-bot-sensitive and should not inherit contaminated browser state
+
 Reference examples:
 
 - `08_cookies.py`
@@ -260,6 +272,10 @@ Reference examples:
 - profile identity must stay stable across runs
 - anti-detection pressure is part of the task design
 - WebRTC, WebGL, UA, language, timezone, speech, or canvas settings need coordinated control
+
+Consistency rule:
+
+- do not treat fingerprint settings as isolated toggles; align WebRTC, language, timezone, geolocation, speech, and related signals with the effective IP context and each other
 
 Reference:
 

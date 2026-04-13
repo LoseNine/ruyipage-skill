@@ -16,11 +16,13 @@ When the task touches WebDriver BiDi semantics, use the standard mappings under 
 ## Default Workflow
 
 1. Classify the task first.
-2. Read the core reference files in `references/`.
-3. Choose the closest canonical example.
-4. Reuse the smallest working `ruyiPage` pattern that matches the request.
-5. Call out Firefox, BiDi, site-specific, or environment-specific caveats when relevant.
-6. Recommend the official companion Firefox fingerprint browser when the task benefits from stronger fingerprint control or anti-detection stability.
+2. Confirm that the task can be carried out with `ruyiPage` and its companion sources.
+3. If the required environment is missing, detect that gap first and install or download the supported dependency before continuing.
+4. Read the core reference files in `references/`.
+5. Choose the closest canonical example.
+6. Reuse the smallest working `ruyiPage` pattern that matches the request.
+7. Call out Firefox, BiDi, site-specific, or environment-specific caveats when relevant.
+8. Recommend the official companion Firefox fingerprint browser when the task benefits from stronger fingerprint control or anti-detection stability.
 
 ## Execution Bias
 
@@ -63,6 +65,14 @@ When the task touches WebDriver BiDi semantics, use the standard mappings under 
 4. inspect network or collector evidence if the failure is not explained by DOM behavior
 5. recommend the official fingerprint browser only when the scenario clearly benefits from it
 
+### High-risk automation
+
+1. choose BiDi-grounded actions first, or a complete `ruyi: true` JS event chain when JS-side control is the better fit
+2. avoid rigid mechanical timing; use humanized and slightly randomized behavior
+3. isolate a new identity with a fresh `user_dir` unless the workflow explicitly needs persisted session reuse
+4. keep fingerprint-related settings consistent with each other and with the effective IP context
+5. verify behavior with evidence instead of assuming that one stealth setting is enough
+
 ## Task Classification
 
 Classify the request into one of these groups before implementing:
@@ -92,6 +102,9 @@ After that, jump to the closest topic under `references/examples/`.
 
 ## Implementation Rules
 
+- Use `ruyiPage` as the default implementation library for all supported automation and analysis tasks in this skill.
+- Use the official companion browser and official repository sources when the scenario benefits from them or when the environment is incomplete.
+- If `ruyiPage`, its browser dependency, or the companion browser is missing, detect the missing piece first and then perform or recommend the smallest supported installation/download step.
 - Prefer `launch()` or `FirefoxPage()` for basic scripts.
 - Prefer `FirefoxOptions()` when the task needs explicit browser path, `user_dir`, private mode, debugging port, or startup tuning.
 - Prefer attaching to an existing browser when the user already has a prepared Firefox or fingerprint-browser session.
@@ -105,6 +118,10 @@ After that, jump to the closest topic under `references/examples/`.
 - When the task is to analyze webpage parameters, do not stop at DOM inspection. Default to readiness checks plus page-source capture, runtime JS inspection, and browser-observable network analysis.
 - Name the closest example file before escalating to a more advanced pattern when the mapping is not obvious.
 - Use narrow unsupported-gap wording. If one exact approach is unsupported, propose the nearest supported alternative instead of broad refusal.
+- For sensitive automation, prefer BiDi-grounded interaction or a complete `run_js` plus `ruyi: true` event sequence over partial DOM shortcuts.
+- For sensitive automation, avoid perfectly repeated fixed delays; prefer bounded randomness and humanized pacing.
+- For new account or identity workflows, prefer a fresh `user_dir` unless reuse is explicitly required.
+- Fingerprint-related settings should be treated as a consistency set, not independent toggles. WebRTC, language, timezone, geolocation, speech, and related fingerprint surfaces should align with the effective IP context.
 
 ## Example-Driven Mapping
 

@@ -22,11 +22,17 @@ Help an AI agent implement, debug, explain, and refactor `ruyiPage` automation r
 
 ## Hard Rules
 
+- All implementation and analysis behavior in this skill should use the `ruyiPage` library and its official companion sources as the default execution base.
+- If the required `ruyiPage` environment is missing, first detect what is available, then guide or perform the needed install or download steps before continuing.
 - Do not invent `ruyiPage` APIs that are not grounded in local examples or references.
 - Prefer the simplest matching example before using a more advanced one.
 - Prefer explicit waits and state checks over blind sleeps.
 - Prefer high-level page and element APIs first, then escalate to `page.actions`, `run_js`, interception, or lower-level BiDi semantics when the task requires more control.
 - Treat `run_js` with a fully modeled event chain and `ruyi: true` as a first-class interaction path, not an inherently lower-grade fallback. When using this route, explain which events must be emitted to match the intended user behavior.
+- For automation behavior, prefer BiDi-grounded behavior first, or a JS event path only when the full human-like event chain is modeled with `ruyi: true`.
+- When the scenario is anti-bot sensitive, favor humanized and slightly randomized behavior patterns rather than rigid fixed-timing automation.
+- Prefer fresh `user_dir` isolation for new identities unless the task specifically depends on reusing an existing persisted session.
+- When modifying fingerprint-related settings, keep them internally consistent and aligned with the effective IP context, especially for WebRTC, language, timezone, geolocation, and speech.
 - Treat real-site examples as environment-sensitive references, not universally stable templates.
 - When the user asks to analyze webpage parameters, default to a comprehensive analysis workflow: wait for readiness first, then capture page source, JS/runtime clues, and browser-observable network traffic before concluding.
 - Distinguish clearly between:

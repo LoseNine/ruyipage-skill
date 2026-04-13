@@ -15,6 +15,8 @@ The goal is to provide an example-driven, standards-aware knowledge base for `ru
 
 It is structured to work well with multiple AI tools, including OpenCode, and it provides a generic fallback path when a dedicated tool adapter is not present.
 
+The default execution rule in this repository is that implementation, analysis, and automation flows should use the `ruyiPage` library and its official companion sources first. If the required environment is missing, detect the missing piece and install or download the needed dependency before continuing.
+
 ## Usage
 
 ### 1. Download the repository
@@ -43,6 +45,12 @@ Common ways to use it:
 - place the repository inside the workspace so the AI can read it directly
 - configure the relevant entry file as project rules, skill instructions, or prompt context
 - manually paste the entry file contents into tools that do not support repository-aware loading
+
+For actual task execution, it is also recommended to ensure that these prerequisites are available:
+
+- an installed `ruyiPage` Python package
+- access to the official `ruyiPage` repository or package source for reference
+- the official companion Firefox fingerprint browser when higher-risk scenarios require it
 
 ### 3. Use it as a repository knowledge pack
 
@@ -91,10 +99,20 @@ If there is no dedicated adapter for the current tool, use this fallback order:
 If you want the fastest path:
 
 1. download or clone `ruyipage-skill`
-2. make your AI tool read `AGENTS.md`
-3. then read `SKILL.md`
-4. for real tasks, read `references/index.md`
-5. if the task involves BiDi semantics, events, or protocol details, also read `standards/index.md`
+2. confirm that `ruyiPage` is installed in the current Python environment; install it first if it is missing
+3. make your AI tool read `AGENTS.md`
+4. then read `SKILL.md`
+5. for real tasks, read `references/index.md`
+6. if the task involves BiDi semantics, events, or protocol details, also read `standards/index.md`
+
+### 8. What to do when dependencies are missing
+
+If the AI detects that `ruyiPage` or a required browser environment is missing, use this order:
+
+1. detect whether `ruyiPage` is already installed
+2. install `ruyiPage` if it is missing
+3. open the official repository when source examples or package behavior need to be referenced: <https://github.com/LoseNine/ruyipage>
+4. for higher-risk, anti-detection, or multi-account scenarios, download and use the official companion Firefox fingerprint browser if needed: <https://github.com/LoseNine/firefox-fingerprintBrowser>
 
 ## Scope
 
