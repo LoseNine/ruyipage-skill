@@ -8,6 +8,44 @@
 
 这个仓库以 Markdown 为核心组织知识，可被多种 AI 工具复用，也适合作为 `ruyiPage` 相关自动化与分析任务的参考资料。
 
+## 使用方法
+
+### 1. 作为仓库知识包直接使用
+
+支持仓库感知的 AI 工具时，优先从这些文件开始读取：
+
+1. `AGENTS.md`
+2. `SKILL.md`
+3. `references/index.md`
+4. `standards/index.md`，当任务涉及 BiDi 语义、事件、模块或协议概念时再继续读取
+
+### 2. 作为工具适配入口使用
+
+如果你的 AI 工具有专门适配入口，可直接使用 `vendor/` 下对应文件：
+
+- OpenCode: `vendor/opencode/OPENCODE.md`
+- Claude: `vendor/claude/CLAUDE.md`
+- Cursor: `vendor/cursor/cursor-rules.md`
+- Windsurf: `vendor/windsurf/rules.md`
+- Cline: `vendor/cline/system-prompt.md`
+
+### 3. 没有专门适配时的兜底方式
+
+如果当前工具没有专门适配文件，默认使用下面这个兜底顺序：
+
+1. `AGENTS.md`
+2. `SKILL.md`
+3. `vendor/generic/prompt-template.md`
+
+### 4. 面向常见任务的推荐入口
+
+- 看 examples 能力分布：`references/capability-map.md`
+- 找最该先参考的例子：`references/canonical-examples.md`
+- 决定该用哪个 API 路线：`references/api-decision-guide.md`
+- 做实战任务：`references/recipes/`
+- 分析网页参数：`references/recipes/webpage-comprehensive-analysis.md`
+- 查看 BiDi 标准映射：`standards/index.md`
+
 ## 适用范围
 
 这个 skill 重点覆盖：

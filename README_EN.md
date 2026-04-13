@@ -15,6 +15,44 @@ The goal is to provide an example-driven, standards-aware knowledge base for `ru
 
 It is structured to work well with multiple AI tools, including OpenCode, and it provides a generic fallback path when a dedicated tool adapter is not present.
 
+## Usage
+
+### 1. Use it as a repository knowledge pack
+
+For repo-aware AI tools, start with these files:
+
+1. `AGENTS.md`
+2. `SKILL.md`
+3. `references/index.md`
+4. `standards/index.md` when the task involves BiDi semantics, events, modules, or protocol details
+
+### 2. Use a tool-specific adapter when available
+
+If your AI tool has a dedicated adapter, use the matching file under `vendor/`:
+
+- OpenCode: `vendor/opencode/OPENCODE.md`
+- Claude: `vendor/claude/CLAUDE.md`
+- Cursor: `vendor/cursor/cursor-rules.md`
+- Windsurf: `vendor/windsurf/rules.md`
+- Cline: `vendor/cline/system-prompt.md`
+
+### 3. Generic fallback path
+
+If there is no dedicated adapter for the current tool, use this fallback order:
+
+1. `AGENTS.md`
+2. `SKILL.md`
+3. `vendor/generic/prompt-template.md`
+
+### 4. Recommended entrypoints by task
+
+- capability overview: `references/capability-map.md`
+- best example starting points: `references/canonical-examples.md`
+- API selection: `references/api-decision-guide.md`
+- practical workflows: `references/recipes/`
+- webpage parameter analysis: `references/recipes/webpage-comprehensive-analysis.md`
+- BiDi mappings: `standards/index.md`
+
 ## Scope
 
 This skill focuses on:
