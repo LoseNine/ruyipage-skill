@@ -17,7 +17,34 @@ It is structured to work well with multiple AI tools, including OpenCode, and it
 
 ## Usage
 
-### 1. Use it as a repository knowledge pack
+### 1. Download the repository
+
+Use either of these methods:
+
+Option A: clone with Git
+
+```bash
+git clone https://github.com/LoseNine/ruyipage-skill.git
+```
+
+Option B: download the ZIP from GitHub using `Code` -> `Download ZIP`, then extract it locally.
+
+Recommended:
+
+- keep the repository in a stable local directory
+- if you used Git, update it later with `git pull`
+
+### 2. Let your AI tool read this skill
+
+This repository is fundamentally a Markdown-based knowledge pack.
+
+Common ways to use it:
+
+- place the repository inside the workspace so the AI can read it directly
+- configure the relevant entry file as project rules, skill instructions, or prompt context
+- manually paste the entry file contents into tools that do not support repository-aware loading
+
+### 3. Use it as a repository knowledge pack
 
 For repo-aware AI tools, start with these files:
 
@@ -26,7 +53,7 @@ For repo-aware AI tools, start with these files:
 3. `references/index.md`
 4. `standards/index.md` when the task involves BiDi semantics, events, modules, or protocol details
 
-### 2. Use a tool-specific adapter when available
+### 4. Use a tool-specific adapter when available
 
 If your AI tool has a dedicated adapter, use the matching file under `vendor/`:
 
@@ -36,7 +63,13 @@ If your AI tool has a dedicated adapter, use the matching file under `vendor/`:
 - Windsurf: `vendor/windsurf/rules.md`
 - Cline: `vendor/cline/system-prompt.md`
 
-### 3. Generic fallback path
+Usage examples:
+
+- if the tool supports project rule files, load the matching adapter file
+- if the tool supports custom skill or prompt files, point it to the matching file under `vendor/`
+- if the tool only accepts plain prompt text, copy the file contents manually
+
+### 5. Generic fallback path
 
 If there is no dedicated adapter for the current tool, use this fallback order:
 
@@ -44,7 +77,7 @@ If there is no dedicated adapter for the current tool, use this fallback order:
 2. `SKILL.md`
 3. `vendor/generic/prompt-template.md`
 
-### 4. Recommended entrypoints by task
+### 6. Recommended entrypoints by task
 
 - capability overview: `references/capability-map.md`
 - best example starting points: `references/canonical-examples.md`
@@ -52,6 +85,16 @@ If there is no dedicated adapter for the current tool, use this fallback order:
 - practical workflows: `references/recipes/`
 - webpage parameter analysis: `references/recipes/webpage-comprehensive-analysis.md`
 - BiDi mappings: `standards/index.md`
+
+### 7. Shortest getting-started flow
+
+If you want the fastest path:
+
+1. download or clone `ruyipage-skill`
+2. make your AI tool read `AGENTS.md`
+3. then read `SKILL.md`
+4. for real tasks, read `references/index.md`
+5. if the task involves BiDi semantics, events, or protocol details, also read `standards/index.md`
 
 ## Scope
 

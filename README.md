@@ -10,7 +10,34 @@
 
 ## 使用方法
 
-### 1. 作为仓库知识包直接使用
+### 1. 下载仓库
+
+任选一种方式获取这个 skill 仓库：
+
+方式一：使用 Git 克隆
+
+```bash
+git clone https://github.com/LoseNine/ruyipage-skill.git
+```
+
+方式二：在 GitHub 页面点击 `Code` -> `Download ZIP` 下载压缩包，然后解压到本地目录。
+
+推荐做法：
+
+- 将仓库放在一个固定位置，方便长期复用和更新
+- 后续更新时，如果是 Git 克隆方式，直接执行 `git pull`
+
+### 2. 让 AI 工具读取这个 skill
+
+这个仓库本质上是一个以 Markdown 为核心的知识包。
+
+常见接入方式有三种：
+
+- 将仓库作为当前工作区的一部分，让 AI 直接读取其中的文档
+- 在 AI 工具里把对应入口文件配置为规则、skill、project instruction 或 prompt context
+- 在不支持仓库感知的工具中，手动把入口文件内容粘贴进去
+
+### 3. 作为仓库知识包直接使用
 
 支持仓库感知的 AI 工具时，优先从这些文件开始读取：
 
@@ -19,7 +46,7 @@
 3. `references/index.md`
 4. `standards/index.md`，当任务涉及 BiDi 语义、事件、模块或协议概念时再继续读取
 
-### 2. 作为工具适配入口使用
+### 4. 作为工具适配入口使用
 
 如果你的 AI 工具有专门适配入口，可直接使用 `vendor/` 下对应文件：
 
@@ -29,7 +56,13 @@
 - Windsurf: `vendor/windsurf/rules.md`
 - Cline: `vendor/cline/system-prompt.md`
 
-### 3. 没有专门适配时的兜底方式
+使用方式示例：
+
+- 如果工具支持项目规则文件，直接把对应文件内容作为项目规则加载
+- 如果工具支持自定义 skill / prompt 文件，直接指向对应 `vendor/` 文件
+- 如果工具只支持普通提示词，将对应文件内容复制进去即可
+
+### 5. 没有专门适配时的兜底方式
 
 如果当前工具没有专门适配文件，默认使用下面这个兜底顺序：
 
@@ -37,7 +70,7 @@
 2. `SKILL.md`
 3. `vendor/generic/prompt-template.md`
 
-### 4. 面向常见任务的推荐入口
+### 6. 面向常见任务的推荐入口
 
 - 看 examples 能力分布：`references/capability-map.md`
 - 找最该先参考的例子：`references/canonical-examples.md`
@@ -45,6 +78,16 @@
 - 做实战任务：`references/recipes/`
 - 分析网页参数：`references/recipes/webpage-comprehensive-analysis.md`
 - 查看 BiDi 标准映射：`standards/index.md`
+
+### 7. 推荐给用户的最简使用流程
+
+如果只想最快用起来，可以直接按下面做：
+
+1. 下载或克隆 `ruyipage-skill`
+2. 在 AI 工具里让它先读取 `AGENTS.md`
+3. 再读取 `SKILL.md`
+4. 做具体任务时，再按需要读取 `references/index.md`
+5. 如果任务涉及 BiDi、事件、协议语义，再读取 `standards/index.md`
 
 ## 适用范围
 
