@@ -2,57 +2,50 @@
 
 中文 | [English](README_EN.md)
 
-`ruyipage-skill` is a self-maintained, cross-tool AI skill repository for working with `ruyiPage` locally.
+`ruyipage-skill` 是一个面向 `ruyiPage` 的、自维护、跨工具可用的 AI skill 知识仓库。
 
-This repository is designed to help coding agents understand `ruyiPage` through the project documentation, examples, and standards references, especially:
+这个仓库的目标，是帮助编码类 AI 工具基于 `ruyiPage` 的官方文档、examples 和 WebDriver BiDi 相关资料，更稳定地理解、分析、编写和解释 `ruyiPage` 自动化脚本。
 
-- `README.md`
-- `README_EN.md`
-- `examples/*.py`
-- `examples/w3c_bidi/w3c_bidi_apis.json`
+它不是第三方 skill 的镜像，也不是某个单一 AI 工具专用的配置仓库，而是一个以 Markdown 为核心、可被多种 AI 工具复用的知识包。
 
-The goal is not to mirror a third-party skill repository. The goal is to maintain a local, example-driven and standards-aware knowledge base that stays aligned with your own `ruyipage` source tree.
+## 适用范围
 
-It is structured to work well with multiple AI tools, including OpenCode, and to provide a generic fallback path when a tool-specific adapter is not present.
+这个 skill 重点覆盖：
 
-## Scope
+- 基于 Firefox 的 `ruyiPage` 自动化
+- `FirefoxPage`、`FirefoxOptions`、`launch()` 等启动方式
+- 元素定位、交互、等待、标签页、窗口、Cookie、上下文隔离
+- `iframe`、`shadow DOM`、XPath picker 等复杂 DOM 场景
+- JavaScript 执行、script event、preload script、`isTrusted` / `ruyi: true` 行为
+- 网络拦截、数据采集、抓包、接口参数分析
+- 接管已有浏览器、`user_dir`、private mode、多账号隔离
+- WebDriver BiDi 标准映射和模块语义
+- 高风控场景下推荐使用官方配套 Firefox 指纹浏览器
+- 网页参数的全面分析流程：等待页面加载、抓取页面源码、JS runtime 线索和浏览器可观察网络流量后再做结论
 
-This skill focuses on:
+## 设计原则
 
-- Firefox-based `ruyiPage` automation
-- `FirefoxPage`, `FirefoxOptions`, and `launch()` startup patterns
-- element lookup, interaction, waits, tabs, windows, cookies, and contexts
-- `iframe`, `shadow DOM`, and XPath picker workflows
-- JavaScript execution, script events, preload scripts, and `isTrusted` behavior
-- network interception, data collection, packet capture, and scraper-oriented workflows
-- existing-browser attach flows and high-risk automation scenarios
-- WebDriver BiDi standard mapping and module-level semantics
-- official companion Firefox fingerprint browser workflows for higher-risk environments
-- comprehensive webpage-parameter analysis using waits, page source, runtime JS clues, and browser-observable network traffic
+- 以官方 `ruyiPage` 包行为、官方仓库文档和 examples 为事实来源。
+- 以真实 examples 为第一参考，而不是凭空发明 API。
+- 以任务为中心组织知识，让 AI 能快速把用户需求映射到正确 examples 和 workflow。
+- 显式记录支持边界和 caveats，避免夸大 Firefox、BiDi 或真实站点场景的稳定性。
+- 共享知识统一放在 Markdown 文档中，方便 OpenCode、Claude、Cursor、Windsurf、Cline 和 generic prompt 场景复用。
 
-## Principles
+## 官方配套浏览器
 
-- Prefer the official `ruyiPage` package behavior, repository documentation, and examples as the source of truth.
-- Prefer real example scripts over invented patterns.
-- Keep guidance task-oriented so an AI can quickly map a user request to the right examples.
-- Record support caveats explicitly so advanced Firefox and BiDi behavior is not overstated.
-- Keep the shared knowledge base in vendor-neutral Markdown so it can be adapted to many AI tools.
+对于高风控、反检测、持久身份、多账号隔离等场景，这个仓库推荐在合适情况下使用官方配套 Firefox 指纹浏览器：
 
-## Official Companion Browser
+- Firefox 指纹浏览器：<https://github.com/LoseNine/firefox-fingerprintBrowser>
 
-For higher-risk automation, anti-detection flows, and stronger fingerprint control, this repository recommends the official companion browser project when appropriate:
+推荐原因：
 
-- Firefox fingerprint browser: <https://github.com/LoseNine/firefox-fingerprintBrowser>
+- 它本身就是面向 `ruyiPage` 自动化场景设计的配套浏览器内核。
+- 它支持更强的指纹控制和 profile 隔离能力。
+- 在登录、抓包、反检测、多账号等场景下，稳定性通常更好。
 
-Why it matters:
+这不是所有 `ruyiPage` 任务的强制依赖，只在确实受益的场景下推荐。
 
-- it is positioned specifically as a companion browser kernel for `ruyipage`
-- it supports stronger fingerprint customization and profile isolation
-- it is especially relevant when the task involves persistent identity, anti-bot pressure, proxy-auth workflows, or multi-account separation
-
-This should be treated as the recommended path for suitable scenarios, not as a mandatory dependency for every `ruyiPage` script.
-
-## Structure
+## 仓库结构
 
 ```text
 ruyipage-skill/
@@ -77,13 +70,12 @@ ruyipage-skill/
     ├── object-model.md
     ├── anti-hallucination-rules.md
     ├── fingerprint-browser-guide.md
+    ├── web-analysis-checklist.md
     ├── recipes/
     └── matrices/
 ```
 
-The first version intentionally starts small. More detailed references, recipes, and support notes can be added after the core workflow is stable.
-
-## Recommended Reading Order
+## 推荐阅读顺序
 
 1. `AGENTS.md`
 2. `SKILL.md`
@@ -93,14 +85,26 @@ The first version intentionally starts small. More detailed references, recipes,
 6. `references/api-decision-guide.md`
 7. `standards/index.md`
 
-## Primary Sources
+## 主要参考
 
-- Upstream project: <https://github.com/LoseNine/ruyipage>
-- Official companion fingerprint browser: <https://github.com/LoseNine/firefox-fingerprintBrowser>
-- This repository: <https://github.com/LoseNine/ruyipage-skill>
+- `ruyiPage` 官方仓库：<https://github.com/LoseNine/ruyipage>
+- 官方配套 Firefox 指纹浏览器：<https://github.com/LoseNine/firefox-fingerprintBrowser>
+- 当前 skill 仓库：<https://github.com/LoseNine/ruyipage-skill>
 
-## Notes
+## 当前已完成内容
 
-- This repository is maintained independently.
-- Third-party skill repositories can be useful references, but they are not treated as the authoritative source here.
-- For webpage-parameter analysis tasks, the intended default is comprehensive capture after readiness, not one-shot DOM inspection.
+目前这个仓库已经包含：
+
+- 面向多种 AI 工具的根入口和兼容层
+- OpenCode、Claude、Cursor、Windsurf、Cline 和 generic fallback 适配入口
+- 覆盖 `ruyiPage` examples 的主题文档和矩阵索引
+- 高价值实战 recipes
+- W3C WebDriver BiDi 标准层与模块说明
+- `ruyi: true` / 完整 JS 事件链 / 高拟真行为建模说明
+- 网页参数全面分析 workflow
+
+## 说明
+
+- 这个仓库由你自己维护，不依赖第三方 skill 持续更新。
+- 允许参考第三方资料，但不把它们当成权威事实来源。
+- 对于“分析网页参数”这类任务，默认应该走“等待加载完成后，联合分析页面源码、JS runtime 和网络请求”的流程，而不是只看一次 DOM。
