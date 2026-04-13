@@ -2,7 +2,7 @@
 
 [中文](README.md) | English
 
-`ruyipage-skill` is a self-maintained, cross-tool AI skill repository for working with `ruyiPage` locally.
+`ruyipage-skill` is a cross-tool AI skill repository for working with `ruyiPage`.
 
 This repository helps coding agents understand `ruyiPage` from the project documentation, examples, and standards references, especially:
 
@@ -11,7 +11,7 @@ This repository helps coding agents understand `ruyiPage` from the project docum
 - `examples/*.py`
 - `examples/w3c_bidi/w3c_bidi_apis.json`
 
-The goal is not to mirror a third-party skill repository. The goal is to maintain a local, example-driven, standards-aware knowledge base that stays aligned with your own `ruyipage` source tree.
+The goal is to provide an example-driven, standards-aware knowledge base for `ruyiPage` automation and analysis tasks.
 
 It is structured to work well with multiple AI tools, including OpenCode, and it provides a generic fallback path when a dedicated tool adapter is not present.
 
@@ -98,8 +98,7 @@ ruyipage-skill/
 - Official companion fingerprint browser: <https://github.com/LoseNine/firefox-fingerprintBrowser>
 - This repository: <https://github.com/LoseNine/ruyipage-skill>
 
-## Notes
+## Project Notes
 
-- This repository is maintained independently.
-- Third-party skill repositories can still be useful references, but they are not treated as the authoritative source here.
-- For webpage-parameter analysis tasks, the intended default is comprehensive capture after readiness, not one-shot DOM inspection.
+- This repository is intended for `ruyiPage` automation, analysis, and knowledge organization workflows.
+- The content is organized around examples, practical workflows, BiDi mappings, and AI-tool compatibility.

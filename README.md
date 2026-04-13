@@ -2,11 +2,11 @@
 
 中文 | [English](README_EN.md)
 
-`ruyipage-skill` 是一个面向 `ruyiPage` 的、自维护、跨工具可用的 AI skill 知识仓库。
+`ruyipage-skill` 是一个面向 `ruyiPage` 的、跨工具可用的 AI skill 知识仓库。
 
 这个仓库的目标，是帮助编码类 AI 工具基于 `ruyiPage` 的官方文档、examples 和 WebDriver BiDi 相关资料，更稳定地理解、分析、编写和解释 `ruyiPage` 自动化脚本。
 
-它不是第三方 skill 的镜像，也不是某个单一 AI 工具专用的配置仓库，而是一个以 Markdown 为核心、可被多种 AI 工具复用的知识包。
+这个仓库以 Markdown 为核心组织知识，可被多种 AI 工具复用，也适合作为 `ruyiPage` 相关自动化与分析任务的参考资料。
 
 ## 适用范围
 
@@ -91,9 +91,9 @@ ruyipage-skill/
 - 官方配套 Firefox 指纹浏览器：<https://github.com/LoseNine/firefox-fingerprintBrowser>
 - 当前 skill 仓库：<https://github.com/LoseNine/ruyipage-skill>
 
-## 当前已完成内容
+## 当前内容
 
-目前这个仓库已经包含：
+当前这个仓库包含：
 
 - 面向多种 AI 工具的根入口和兼容层
 - OpenCode、Claude、Cursor、Windsurf、Cline 和 generic fallback 适配入口
@@ -103,7 +103,7 @@ ruyipage-skill/
 - `ruyi: true` / 完整 JS 事件链 / 高拟真行为建模说明
 - 网页参数全面分析 workflow
 
-## 说明
+## 项目说明
 
 - 这个仓库面向 `ruyiPage` 相关自动化、分析与知识整理场景开放使用。
-- 仓库内容会持续围绕 examples、实战 workflow、BiDi 标准映射和 AI 工具适配进行完善。
+- 仓库内容围绕 examples、实战 workflow、BiDi 标准映射和 AI 工具适配进行组织。
