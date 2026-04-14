@@ -48,6 +48,13 @@ Expected approach:
 - handle dynamic entry points such as textarea, contenteditable, or custom input containers
 - treat closed-shadow-like scenarios as locator-discovery problems that require fallback probing rather than fragile one-shot selection
 
+This locating process should be evidence-driven.
+
+- collect page source context first
+- collect JS clues first
+- collect network evidence when the page is dynamic
+- then narrow down the actual interactive target
+
 ### 7. API grounding is required
 
 When implementation details are uncertain:
@@ -57,3 +64,13 @@ When implementation details are uncertain:
 - use local source copies only as a secondary reference
 - if the local copy is behind, update it before relying on it
 - only write APIs and calling patterns that can be grounded in those references
+
+### 8. Locator strategy must be multi-layered
+
+For difficult pages, combine multiple locating methods:
+
+- XPath
+- CSS
+- DOM tree inspection such as `browsingContext.getTree`
+- element geometry and center-point XY probing
+- BiDi route and full-`ruyi` JS route side by side until one is proven workable

@@ -15,6 +15,9 @@
 - 面对复杂页面时，要能够处理 iframe 嵌套、复杂输入入口、甚至 closed shadow_root 一类高难定位场景，并参考 `quickstart_cloudfare.py` 这类真实页面处理方式持续探测定位点
 - 在具体写代码时，如果对 `ruyiPage` API 不够确定，必须先核对官方 GitHub 仓库与 examples，必要时再核对本地源码，禁止编写虚假 API
 - 源码核对的最高优先级是官方开源地址：<https://github.com/LoseNine/ruyipage>；如果本地副本落后，应该先更新到较新版本后再继续判断 API
+- 在进行页面自动化定位时，要先尽量构建完整网页源码视图，包括页面源码、分批补齐的源码片段、网络包和相关 JS 线索，再逐层推进定位
+- 定位过程要并行推进 BiDi 路线和完整 `ruyi` JS 拟人路线，最终如果两者都能命中，优先保留 BiDi 路线
+- 定位时要综合尝试 XPath、CSS、`browsingContext.getTree`、元素尺寸、XY 中心点等多种手段，而不是依赖单一 selector
 
 ## 使用方法
 
@@ -36,6 +39,7 @@ git clone https://github.com/LoseNine/ruyipage-skill.git
 4. `docs/fingerprint-browser.md`
 5. `docs/data-capture-coordination.md`
 6. `docs/complex-page-location.md`
+7. `docs/page-analysis-and-location.md`
 
 ### 3. 环境要求
 

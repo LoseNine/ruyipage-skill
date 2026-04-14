@@ -15,6 +15,9 @@ This version currently focuses on one core principle:
 - on complex pages, the skill should be able to keep probing for accurate targets across iframe nesting, difficult entry points, and closed-shadow-like locator challenges, following the style of real-page handling shown in `quickstart_cloudfare.py`
 - when writing code, if a `ruyiPage` API is uncertain, the skill must check the official GitHub repository and official examples first, use local source only as a secondary reference, and must not invent unsupported APIs
 - the highest-priority source reference is <https://github.com/LoseNine/ruyipage>; if a local copy is behind, update it first before concluding how an API should be used
+- for page-location work, the skill should first build as complete a page-source view as possible, including page source, batched source fragments, packet capture, and relevant JS clues
+- locator work should advance through both a BiDi route and a full human-like JS route with `ruyi`, and should finally prefer the BiDi route when both are workable
+- locator strategy should combine XPath, CSS, `browsingContext.getTree`, element sizing, and center-point XY methods instead of relying on a single selector style
 
 ## Usage
 
@@ -36,6 +39,7 @@ Recommended reading order:
 4. `docs/fingerprint-browser.md`
 5. `docs/data-capture-coordination.md`
 6. `docs/complex-page-location.md`
+7. `docs/page-analysis-and-location.md`
 
 ### 3. Runtime requirements
 

@@ -17,6 +17,7 @@ For automation behavior, this skill treats the following as the first rule:
 6. Fingerprint-related changes must stay internally consistent, especially for WebRTC, language, timezone, geolocation, speech, and IP alignment.
 7. In real scraping or data-collection workflows, automation behavior and network capture must be designed together.
 8. On complex pages, locator discovery should remain resilient across iframe nesting, dynamic entry points, and shadow-boundary difficulties.
+9. Before serious locator work on a complex page, build as complete a source view as possible from DOM, JS clues, and network evidence.
 
 ## Default Workflow
 
@@ -32,6 +33,8 @@ For automation behavior, this skill treats the following as the first rule:
 10. If anti-bot pressure exists, check whether the official fingerprint browser should be used.
 11. For data collection, start listeners or collectors before the triggering automation and correlate request and response data through request-chain evidence.
 12. For complex pages, probe the real interactive target repeatedly instead of assuming one selector or one DOM layer is enough.
+13. During locator work, advance BiDi and full-`ruyi` JS routes in parallel until one or both can actually reach the target.
+14. If both routes work, prefer the BiDi-grounded route.
 
 ## Required Behavior Rules
 
@@ -45,6 +48,8 @@ For automation behavior, this skill treats the following as the first rule:
 - Use local source copies only as a secondary reference, and update them first if they are behind.
 - Do not write invented or unsupported `ruyiPage` APIs.
 - Do not assume the first visible DOM node is the real interactive target on complex pages.
+- Do not finalize locator decisions on complex pages before collecting enough page-source, JS, and network context to explain what is actually on the page.
+- Do not rely on a single locator method when XPath, CSS, DOM tree inspection, and XY-based probing can be combined.
 
 ## Read Next
 
@@ -54,3 +59,4 @@ For automation behavior, this skill treats the following as the first rule:
 4. `docs/environment-detection.md`
 5. `docs/data-capture-coordination.md`
 6. `docs/complex-page-location.md`
+7. `docs/page-analysis-and-location.md`
