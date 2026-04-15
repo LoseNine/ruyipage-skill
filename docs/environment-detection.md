@@ -1,22 +1,59 @@
 # Environment Detection
 
-## Rule
+How to detect and set up the ruyiPage runtime before starting automation.
 
-If the required runtime is missing, detect first, then install or download what is needed.
+## Detection Steps
 
-If source references are needed, treat the official GitHub repository as the highest-priority reference source.
+### 1. Check ruyiPage installation
 
-## Detection Order
+```bash
+pip show ruyipage
+```
 
-1. detect whether `ruyiPage` is installed in the current Python environment
-2. detect whether Firefox is present at the default Windows `C` drive path
-3. detect whether that browser should be treated as the fingerprint browser in the current workflow
-4. detect whether a fresh `user_dir` should be created for the task
-5. detect whether the local `ruyiPage` source copy is behind the official GitHub repository
+If missing:
 
-## If Missing
+```bash
+pip install ruyipage
+```
 
-- install `ruyiPage` if it is missing
-- download or prepare the official fingerprint browser when the scenario requires it
-- update the local `ruyiPage` reference copy if it is outdated
-- avoid continuing with unsupported assumptions about the browser path or identity state
+### 2. Check Firefox browser path
+
+```bash
+# Windows default
+ls "C:/Program Files/Mozilla Firefox/firefox.exe" 2>/dev/null
+
+# Or search
+where firefox 2>/dev/null
+```
+
+### 3. Check if the fingerprint browser is needed
+
+Only needed when the task involves anti-bot pressure, multi-account isolation, or persistent identity. See `docs/fingerprint-browser.md` for details.
+
+### 4. Decide on user_dir
+
+- New identity → create a fresh `user_dir`
+- Resuming a session → reuse the existing `user_dir`
+
+```python
+opts = FirefoxOptions()
+opts.set_user_dir("./profiles/fresh_identity_001")
+```
+
+### 5. Check local source reference
+
+If you need to verify ruyiPage APIs against source code:
+
+```bash
+cd /path/to/local/ruyipage
+git fetch origin
+git log HEAD..origin/main --oneline
+```
+
+If the local copy is behind, update it before relying on it:
+
+```bash
+git pull origin main
+```
+
+The official repository is always the highest-priority reference: <https://github.com/LoseNine/ruyipage>

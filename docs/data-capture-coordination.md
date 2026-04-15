@@ -1,79 +1,70 @@
 # Data Capture Coordination
 
-## Rule
+How to combine page automation with network capture for scraping workflows.
 
-In real webpage data-collection workflows, automation behavior and network capture must work together.
+## Core Pattern
 
-Automation is not separate from packet capture.
+Automation triggers real page behavior. Network capture grabs the request/response chain. They are one workflow, not two separate tasks.
 
-- automation behavior triggers the real page state changes
-- network listening, interception, and collectors capture the request and response chain
-- the result should be explained through linked evidence rather than one isolated observation
+**The sequence always is:**
 
-## What To Learn From Example 43
+1. Page is ready
+2. Start the listener/collector **before** the trigger action
+3. Perform the humanized trigger action
+4. Wait for the matching packet
+5. Correlate request and response through `request_id` or URL
+6. Inspect the response body
+7. Decide: continue, retry, or escalate
 
-The key pattern is not only "perform an action" and not only "listen to packets".
+## Example: New Intercept API (recommended)
 
-The key pattern is:
+Based on the pattern from `40_scraper_packet_capture.py`:
 
-1. open the real page
-2. wait for readiness
-3. start the relevant collector or listener before the trigger action
-4. use human-like page actions to trigger the target request
-5. wait for the matching packet
-6. use `request_id` or equivalent request-chain evidence to fetch the response body
-7. continue or retry based on the actual response content
+```python
+from ruyipage import FirefoxOptions, FirefoxPage
 
-## Coordination Requirements
+page = FirefoxPage(FirefoxOptions())
+page.get("https://example.com/search")
+page.wait.doc_loaded()
 
-### 1. Trigger and capture are one workflow
+# Step 1: start intercept BEFORE the trigger action
+page.intercept.start(handler=None, phases=["beforeRequestSent"], collect_response=True)
 
-Do not design them separately.
+# Step 2: trigger the search (humanized)
+page.ele("css:input").input("query", clear=True)
+page.actions.press(Keys.ENTER).perform()
 
-- the action should be chosen to reproduce the page's real behavior
-- the listener should be started early enough to capture the request
-- the captured data should be tied back to the action that triggered it
+# Step 3: wait and read response
+req = page.intercept.wait(timeout=15)
+print(req.response_body)
+req.continue_request()
+page.intercept.stop()
+```
 
-### 2. Start listeners first
+## Example: Legacy Listen + Collector API
 
-For request and response capture, start the relevant listener, `listen`, collector, or interception path before the action that triggers the network flow.
+Based on the pattern from `43_zhipin_xpath_picker.py`:
 
-### 3. Use realistic trigger behavior
+```python
+# Step 1: register collector and listener BEFORE the action
+collector = page.network.add_data_collector(
+    ["responseCompleted"], data_types=["response"]
+)
+page.listen.start("api.example.com/data", method="POST")
 
-For sensitive pages, the trigger action should use:
+# Step 2: trigger action
+page.actions.move_to({"x": 500, "y": 300}).click().perform()
 
-- BiDi-grounded behavior first
-- or a full `ruyi` JS event chain if JS-side control is required
-- humanized timing and pacing
-
-### 4. Correlate request and response
-
-Prefer a request chain that can be traced through identifiers such as:
-
-- `request_id`
-- request URL and method
-- request body
-- response status
-- response body
-
-### 5. Keep the loop evidence-driven
-
-If the response shows anti-bot or environment abnormality, do not stop at the first packet. Re-check the environment assumptions and repeat the trigger-capture loop when appropriate.
-
-## Preferred Capture Pattern
-
-1. page ready
-2. collector/listener ready
-3. trigger action ready
-4. perform humanized trigger
-5. wait for packet
-6. correlate request and response
-7. inspect body
-8. decide whether to continue, retry, or escalate
+# Step 3: wait, correlate, read
+packet = page.listen.wait(timeout=30)
+body = collector.get(packet.request_id, data_type="response")
+page.listen.stop()
+collector.stop()
+```
 
 ## What Not To Do
 
-- do not trigger the action first and only then start listening
-- do not rely on DOM alone when the useful data is in packets
-- do not treat one matching URL as enough without checking the linked request and response data
-- do not ignore abnormal-response bodies when deciding whether the collection succeeded
+- Don't trigger the action first and then start listening — you'll miss the packet
+- Don't rely on DOM scraping alone when the useful data is in API responses
+- Don't treat one matching URL as success without checking the response body
+- Don't ignore abnormal responses (anti-bot blocks, empty bodies) — re-check environment and retry

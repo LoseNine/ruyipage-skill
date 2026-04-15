@@ -1,38 +1,45 @@
 # Fingerprint Browser
 
+When and how to use the official Firefox fingerprint browser for anti-bot scenarios.
+
 ## Official Project
 
-- <https://github.com/LoseNine/firefox-fingerprintBrowser>
+<https://github.com/LoseNine/firefox-fingerprintBrowser>
 
-## When To Use It
+## When To Use
 
-Use it when:
+- The site has risk-control or anti-bot detection
+- Persistent identity matters across sessions
+- Multiple accounts require stronger fingerprint separation
 
-- the site is under risk control or anti-bot pressure
-- persistent identity matters
-- fingerprint consistency matters
-- multiple accounts require stronger separation
+If the task doesn't involve anti-bot pressure, a regular Firefox instance is fine.
 
-## Default Path Assumption
+## Default Path
 
-This skill assumes that the Firefox browser installed under the default Windows `C` drive path is the fingerprint browser.
+This skill assumes the Firefox browser at the default Windows `C` drive install path is the fingerprint browser. If the actual path differs, detect it first:
 
-If that is not true in the actual environment, detect the real browser path before continuing.
+```bash
+# Detect Firefox path on Windows
+where firefox 2>/dev/null || ls "C:/Program Files/Mozilla Firefox/firefox.exe" 2>/dev/null
+```
+
+Then set it explicitly:
+
+```python
+opts = FirefoxOptions()
+opts.set_browser_path(r"C:\Program Files\Mozilla Firefox\firefox.exe")
+```
 
 ## Consistency Rules
 
-Keep these aligned with the effective IP context and with each other:
+All fingerprint traits in one profile must align with the effective IP context:
 
-- WebRTC
-- language / locale
-- timezone
-- geolocation
-- speech
-- other fingerprint surfaces
+| Trait | Must match |
+|---|---|
+| WebRTC local IP | The proxy/VPN IP |
+| Language / locale | The IP's geographic region |
+| Timezone | The IP's timezone |
+| Geolocation | The IP's coordinates |
+| Speech voices | The language setting |
 
-Do not mix unrelated identity traits in one profile.
-
-## Profile Rule
-
-- prefer a fresh `user_dir` for a new identity
-- reuse an existing `user_dir` only when the workflow explicitly depends on persisted state
+Never mix traits from unrelated identities in one profile.
