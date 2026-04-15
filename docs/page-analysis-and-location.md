@@ -1,69 +1,68 @@
 # Page Analysis And Location
 
-## Goal
+How to build a complete page-source view before committing to locator decisions.
 
-Before serious page automation locating work, build a usable full-page view and then narrow down the true target step by step.
+## Why This Matters
 
-## Rule 1: Build a complete enough page-source view first
+On complex or dynamic pages, the first visible DOM node is often not the real interactive target. Jumping straight into selectors without understanding the page structure leads to fragile, broken automation.
 
-Do not rush straight into selectors.
+## Step-by-Step Approach
 
-The skill should gather and combine:
+### 1. Collect page source view
 
-- rendered page source
-- page-source fragments in batches when the full page is too large to inspect at once
-- network packets and request/response evidence
-- relevant JS clues
+```python
+# Get rendered page source
+source = page.run_js("return document.documentElement.outerHTML")
 
-If the source is too large, collect it in batches until the working view is complete enough for locator analysis.
+# If too large, collect in batches
+head = page.run_js("return document.head.outerHTML")
+body_top = page.run_js("return document.body.innerHTML.substring(0, 50000)")
+```
 
-## Rule 2: Advance BiDi and JS locating together
+### 2. Inspect frame structure
 
-When the page is difficult:
+```python
+# Discover all child frames
+frames = page.get_frames()
 
-- advance a BiDi-grounded route
-- advance a full human-like JS route with `ruyi`
-- compare which route can really reach the intended element or data
+# Get a specific frame by index or locator
+frame = page.get_frame(index=0)
+# frame = page.get_frame("css:iframe#content")
 
-If both are workable, prefer the BiDi route.
+# Locate elements inside the frame
+target = frame.ele("css:textarea")
+```
 
-## Rule 3: Use multiple locating methods
+### 3. Collect network evidence for dynamic pages
 
-Do not rely on one selector style.
+Pages that render data from API responses need packet inspection too. See `docs/data-capture-coordination.md` for the capture pattern.
 
-Useful locating methods include:
+### 4. Try CSS and XPath candidates
 
-- XPath
-- CSS
-- `browsingContext.getTree`
-- frame-path inspection
-- element geometry
-- center-point XY probing
+```python
+# CSS
+target = page.ele("css:textarea")
 
-## Recommended Sequence
+# XPath (with xpath_picker enabled)
+target = page.ele("xpath://div[@class='editor']//textarea")
+```
 
-1. collect page source view
-2. collect packet and JS clues if the page is dynamic
-3. inspect frame and tree structure
-4. try CSS and XPath candidates
-5. verify geometry and center-point behavior when needed
-6. advance BiDi and full-`ruyi` JS routes step by step
-7. keep the route that actually reaches the target reliably
-8. if both work, keep the BiDi route
+### 5. Verify with geometry when needed
 
-## What Counts As Complete Enough Source View
+When selectors are ambiguous, check element position and size:
 
-A useful view usually includes:
+```python
+# Use center-point XY to confirm you're hitting the right element
+page.actions.move_to({"x": 500, "y": 300}).click().perform()
+```
 
-- current rendered source
-- key dynamic regions
-- relevant frame structure
-- packet evidence for data-driven pages
-- JS clues that explain dynamic rendering or event behavior
+### 6. Advance BiDi and JS routes in parallel
+
+Try both approaches until one proves workable. If both can reach the target, keep the BiDi route (it's more reliable and natively trusted).
 
 ## What Not To Do
 
-- do not rely on one CSS or XPath guess before understanding the page shape
-- do not stop after the first failed route if another supported route is still available
-- do not choose the JS route by default when the BiDi route works equally well
-- do not ignore packet evidence on pages whose useful data is rendered dynamically from API responses
+- Don't guess a CSS selector before understanding the page shape
+- Don't stop after the first failed route if other methods are available
+- Don't default to the JS route when the BiDi route works equally well
+- Don't ignore network evidence on pages whose content comes from API responses

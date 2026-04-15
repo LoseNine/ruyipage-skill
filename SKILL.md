@@ -1,62 +1,66 @@
 ---
 name: ruyipage-skill
-description: Open-source RuyiPage skill focused on humanized automation, BiDi-first behavior, full JS event-chain modeling with ruyi/isTrusted support, isolated user_dir usage, and fingerprint-consistent anti-bot workflows.
+description: AI skill for ruyiPage browser automation. Use this skill whenever the user wants to automate Firefox with ruyiPage, write ruyiPage scripts, handle anti-bot challenges, capture network data, locate elements on complex pages, or work with the ruyiPage fingerprint browser. Do not trigger for generic Selenium/Playwright/Puppeteer tasks that have nothing to do with ruyiPage.
+version: "1.1"
+last_updated: 2026-04-14
 ---
 
 # RuyiPage Skill
 
-## Core Rule
+## Core Principles
 
-For automation behavior, this skill treats the following as the first rule:
+1. **BiDi first.** When ruyiPage exposes a BiDi-grounded interaction, use that path. BiDi actions are natively trusted by the browser and don't need workarounds.
 
-1. Prefer BiDi-native behavior first.
-2. If JS is used for interaction, it must model the full human-like event sequence and include the `ruyi` property so the behavior can pass `isTrusted`-related checks.
-3. Behavior should be humanized, randomized, and naturally paced rather than rigid and mechanical.
-4. Prefer a fresh isolated `user_dir` for new identities.
-5. In risk-control scenarios, use the official Firefox fingerprint browser when needed.
-6. Fingerprint-related changes must stay internally consistent, especially for WebRTC, language, timezone, geolocation, speech, and IP alignment.
-7. In real scraping or data-collection workflows, automation behavior and network capture must be designed together.
-8. On complex pages, locator discovery should remain resilient across iframe nesting, dynamic entry points, and shadow-boundary difficulties.
-9. Before serious locator work on a complex page, build as complete a source view as possible from DOM, JS clues, and network evidence.
+2. **BiDi for input, JS for queries.** BiDi-native actions (`page.ele().input()`, `page.actions`) produce `isTrusted: true` events automatically. Use `run_js` only for DOM queries or non-input operations — never for sensitive input, as `dispatchEvent` produces `isTrusted: false`.
 
-## Default Workflow
+3. **Humanize everything.** Use bounded randomness for delays, natural pacing between actions, and realistic interaction ordering. Rigid fixed-timing loops get detected.
 
-1. Confirm the task should be solved with `ruyiPage`.
-2. Detect whether the required runtime environment is already available.
-3. If something is missing, install or download the supported dependency first.
-4. Treat the official `ruyiPage` GitHub repository as the highest-priority source reference.
-5. If a local source copy is behind, update it before using it to judge API behavior.
-6. Choose a BiDi-grounded path first.
-7. If JS interaction is needed, model the full event chain with `ruyi`.
-8. Keep behavior humanized and slightly randomized.
-9. Prefer a fresh `user_dir` unless the task explicitly depends on persisted state.
-10. If anti-bot pressure exists, check whether the official fingerprint browser should be used.
-11. For data collection, start listeners or collectors before the triggering automation and correlate request and response data through request-chain evidence.
-12. For complex pages, probe the real interactive target repeatedly instead of assuming one selector or one DOM layer is enough.
-13. During locator work, advance BiDi and full-`ruyi` JS routes in parallel until one or both can actually reach the target.
-14. If both routes work, prefer the BiDi-grounded route.
+4. **Isolate identities.** Prefer a fresh `user_dir` for each new identity. Only reuse an existing profile when the task explicitly needs persisted session state.
 
-## Required Behavior Rules
+5. **API grounding.** If a ruyiPage API is uncertain, check the official repository (<https://github.com/LoseNine/ruyipage>) and its examples first. Never invent unsupported APIs.
 
-- Do not use partial JS event simulation for sensitive automation.
-- Do not use rigid repeated timing for sensitive automation.
-- Do not reuse contaminated or unrelated browser profiles for a new identity.
-- Do not treat fingerprint settings as isolated toggles.
-- Do not recommend fingerprint changes that conflict with the effective IP context.
-- Do not separate page automation from packet capture in data-collection workflows when the request and response chain is part of the task target.
-- If an API is uncertain during implementation, check the official `ruyiPage` GitHub repository and official `examples` first.
-- Use local source copies only as a secondary reference, and update them first if they are behind.
-- Do not write invented or unsupported `ruyiPage` APIs.
-- Do not assume the first visible DOM node is the real interactive target on complex pages.
-- Do not finalize locator decisions on complex pages before collecting enough page-source, JS, and network context to explain what is actually on the page.
-- Do not rely on a single locator method when XPath, CSS, DOM tree inspection, and XY-based probing can be combined.
+## Quick API Reference
 
-## Read Next
+```python
+# Simple launch
+from ruyipage import launch
+page = launch(headless=False)
 
-1. `docs/core-principle.md`
-2. `docs/humanized-automation.md`
-3. `docs/fingerprint-browser.md`
-4. `docs/environment-detection.md`
-5. `docs/data-capture-coordination.md`
-6. `docs/complex-page-location.md`
-7. `docs/page-analysis-and-location.md`
+# Explicit configuration
+from ruyipage import FirefoxOptions, FirefoxPage
+opts = FirefoxOptions()
+opts.set_user_dir("./my_profile")      # identity isolation
+page = FirefoxPage(opts)
+
+# Element interaction
+page.ele("css:textarea").click()
+page.ele("css:textarea").input("hello", clear=True)
+
+# Actions chain (humanized)
+from ruyipage import Keys
+page.actions.move_to({"x": 500, "y": 300}).click().perform()
+page.actions.type("search term", interval=80).press(Keys.ENTER).perform()
+
+# Network capture (new intercept API)
+page.intercept.start(handler=None, phases=["beforeRequestSent"], collect_response=True)
+req = page.intercept.wait(timeout=10)
+body = req.response_body
+req.continue_request()
+
+# Cloudflare challenge
+page.handle_cloudflare_challenge(timeout=120, check_interval=2)
+```
+
+## When To Read Which Doc
+
+Read only what your current task needs:
+
+| Task scenario | Read this |
+|---|---|
+| Understanding the full priority system | `docs/core-principle.md` |
+| Writing humanized interaction code | `docs/humanized-automation.md` |
+| Anti-bot / fingerprint / multi-account | `docs/fingerprint-browser.md` |
+| Setting up the runtime environment | `docs/environment-detection.md` |
+| Scraping with network capture | `docs/data-capture-coordination.md` |
+| Locating elements on difficult pages | `docs/complex-page-location.md` |
+| Building full page-source view before locating | `docs/page-analysis-and-location.md` |

@@ -1,76 +1,50 @@
 # Core Principle
 
-This skill currently centers on one primary automation principle.
+The priority system behind every automation decision in this skill.
 
 ## Priority Order
 
 ### 1. BiDi-native behavior first
 
-When `ruyiPage` exposes a BiDi-grounded interaction path, use that first for sensitive automation.
+BiDi actions go through the browser's own trusted input pipeline. They don't need `isTrusted` workarounds and are the most reliable path for sensitive automation.
 
-### 2. Full JS event-chain behavior second
+### 2. Full JS event chain as fallback
 
-If JS is the better interaction layer, it must not be a shortcut.
+When BiDi can't reach the target (e.g., custom input containers, shadow DOM internals), use JS — but model the complete human-like event sequence.
 
-Requirements:
+**Why this matters:** A bare `dispatchEvent` produces `isTrusted: false`. Many sites check this property. BiDi-native actions (like `page.ele().input()` and `page.actions`) go through the browser's trusted input pipeline, producing `isTrusted: true` events automatically. Only fall back to `run_js` for DOM queries or non-input operations.
 
-- model the full control-specific human-like event sequence
-- include the `ruyi` property where required
-- treat `isTrusted`-related behavior as part of the design target
+**Example — BiDi vs JS input:**
 
-### 3. Humanization is required
+```python
+# Preferred: BiDi path — natively trusted
+page.ele("css:textarea").input("hello", clear=True)
 
-Automation behavior should avoid mechanical timing and repeated identical interaction patterns.
+# Also trusted: actions chain
+page.actions.move_to(page.ele("css:textarea")).click().perform()
+page.actions.type("hello", interval=80).perform()
 
-Expected qualities:
+# JS fallback — for DOM queries / non-input operations only
+# Note: JS dispatchEvent produces isTrusted: false, avoid for sensitive inputs
+source = page.run_js("return document.querySelector('textarea').value")
+```
 
-- bounded randomness
-- humanized pacing
-- natural pauses and sequencing
-- realistic interaction ordering
+### 3. Multi-layered locating
 
-### 4. Isolation is required
+For difficult pages, combine multiple methods rather than betting on one selector:
 
-For new identities, prefer a fresh isolated `user_dir`.
+- CSS / XPath selectors
+- `page.get_frames()` / `page.get_frame()` for frame inspection
+- Element geometry and center-point XY probing
+- BiDi route and JS route advanced in parallel
 
-### 5. Fingerprint consistency is required
+When both routes reach the target, keep the BiDi route.
 
-If fingerprint changes are applied, they must remain internally consistent and aligned with the effective IP context.
+### 4. API grounding
 
-### 6. Complex-page locating must stay resilient
+When uncertain about a ruyiPage API:
 
-For difficult pages, locating should not stop at a single selector guess.
-
-Expected approach:
-
-- probe for the real interactive target repeatedly
-- adapt across iframe nesting
-- handle dynamic entry points such as textarea, contenteditable, or custom input containers
-- treat closed-shadow-like scenarios as locator-discovery problems that require fallback probing rather than fragile one-shot selection
-
-This locating process should be evidence-driven.
-
-- collect page source context first
-- collect JS clues first
-- collect network evidence when the page is dynamic
-- then narrow down the actual interactive target
-
-### 7. API grounding is required
-
-When implementation details are uncertain:
-
-- check the official GitHub repository first: <https://github.com/LoseNine/ruyipage>
-- check the official `examples` directory first
-- use local source copies only as a secondary reference
-- if the local copy is behind, update it before relying on it
-- only write APIs and calling patterns that can be grounded in those references
-
-### 8. Locator strategy must be multi-layered
-
-For difficult pages, combine multiple locating methods:
-
-- XPath
-- CSS
-- DOM tree inspection such as `browsingContext.getTree`
-- element geometry and center-point XY probing
-- BiDi route and full-`ruyi` JS route side by side until one is proven workable
+1. Check the official GitHub repository: <https://github.com/LoseNine/ruyipage>
+2. Check the examples directory (files named `00_quickstart.py` through `45_*.py`)
+3. Use local source copies only as secondary reference — update them first if behind
+4. Never write invented or unsupported APIs

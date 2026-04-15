@@ -1,70 +1,79 @@
 # Complex Page Location
 
-## Goal
+How to find the correct interaction target on difficult pages.
 
-This skill should remain able to find the correct interaction point on difficult pages.
+## Typical Difficulties
 
-## Typical Difficult Cases
+- Iframe nesting (the real input lives inside nested frames)
+- Dynamic entry points (textarea, contenteditable, custom input containers)
+- Cloudflare-style 5-second shields and challenge transitions
+- Shadow-boundary problems (closed shadow roots, layered DOM)
 
-- iframe nesting
-- multiple DOM layers before the real input target appears
-- dynamic input entry points
-- pages protected by 5-second shield or Cloudflare-style transitions
-- shadow-boundary problems, including cases that behave like closed shadow-root locating challenges
+## Strategy
 
-## Reference Style
+### 1. Wait for page stabilization
 
-Use the locating style shown by `quickstart_cloudfare.py` as the model for difficult real pages.
+Don't locate immediately. Let challenges complete and dynamic content hydrate.
 
-Key ideas from that style:
+```python
+page.get(url, wait="none")
+page.handle_cloudflare_challenge(timeout=120, check_interval=2)  # if applicable
+page.wait.doc_loaded(timeout=15)
+```
 
-1. do not assume one selector is enough
-2. probe multiple candidate entry points
-3. retry over time while the page is still stabilizing
-4. prefer the actual interactive target over the first visible container
+### 2. Probe multiple candidates
 
-## Preferred Locating Strategy
+Don't assume one selector is enough. Try several:
 
-### 1. Wait for page stabilization first
+```python
+candidates = [
+    "css:textarea",
+    'css:[contenteditable="true"]',
+    "css:div.input-container",
+    "css:input[type='text']",
+]
+target = None
+for sel in candidates:
+    el = page.ele(sel)
+    if el:
+        target = el
+        break
+```
 
-- let the page reach a usable state
-- allow for challenge pages, delayed hydration, or shield transitions
+### 3. Use repeated probing in bounded loops
 
-### 2. Probe multiple candidate targets
+Pages may still be loading or transitioning. Retry before giving up.
 
-Examples of candidates:
+```python
+import time
 
-- `textarea`
-- `[contenteditable="true"]`
-- custom input containers
-- page-specific visible action zones
+for attempt in range(5):
+    target = page.ele("css:textarea")
+    if target:
+        break
+    time.sleep(2)
+```
 
-### 3. Use repeated probing rather than one-shot locating
+### 4. Respect frame boundaries
 
-- retry in bounded loops
-- re-check after page transitions
-- re-check after challenge-handling logic completes
+If the target is inside an iframe, use the public frame API to navigate into it:
 
-### 4. Respect DOM boundaries
+```python
+# Discover all child frames
+frames = page.get_frames()
 
-- if the page uses iframe nesting, locate through the correct frame path
-- if the page behaves like a shadow-boundary problem, treat it as a layered locating problem rather than assuming the main DOM is enough
+# Get a specific frame by index, locator, or context_id
+frame = page.get_frame(index=0)
+# frame = page.get_frame("css:iframe#editor")
 
-### 5. Verify the target is truly interactive
+# Locate elements inside the frame
+target = frame.ele("css:textarea")
+```
 
-The real target should be able to:
+### 5. Verify the target is interactive
 
-- receive focus
-- accept input or click behavior
-- trigger the intended downstream page reaction
+The real target should receive focus, accept input, and trigger downstream behavior. If clicking a wrapper element does nothing, keep probing deeper.
 
-## Practical Rule
+## Reference
 
-On difficult pages, correct locating is often an iterative discovery process, not a single selector lookup.
-
-## What Not To Do
-
-- do not stop after the first failed selector
-- do not assume the visible wrapper is the true input target
-- do not ignore page-transition time when shields or challenge pages are involved
-- do not treat closed-shadow-like behavior as proof that the task is impossible; instead continue layered probing until the real interaction point is identified or the current layer is exhausted
+The `quickstart_cloudfare.py` example demonstrates this resilient probing style for real Cloudflare-protected pages.
